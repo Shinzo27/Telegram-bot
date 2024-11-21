@@ -79,7 +79,6 @@ bot.command('weather', async(ctx) => {
 
 bot.command('block', async(ctx) => {
     const userChatId = ctx.message.text.split(' ')[2];
-    console.log(userChatId);
     const adminId = ctx.message.text.split(' ')[1];
 
     if(!adminId || adminId !== process.env.ADMIN_ID) {
@@ -93,7 +92,6 @@ bot.command('block', async(ctx) => {
     }
 
     const user = await User.findOne({ userId: userChatId });
-    console.log(user);
     if (!user) {
         ctx.reply('User not found');
         return;
