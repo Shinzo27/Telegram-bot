@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "./ui/table"
+import Loader from "./Loader";
 
 interface User {
   _id: string;
@@ -14,9 +15,11 @@ const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL
 
 const UserList = () => {
     const [users, setUsers] = useState<User[]>([])
+    const [loading, setLoading] = useState(true)
 
     useEffect(() => {
         const fetchUsers = async () => {
+            setLoading(true)
             const response = await fetch(`${backendUrl}/getUser`, {
                 method: "GET",
                 headers: {
@@ -25,12 +28,13 @@ const UserList = () => {
             });
             const data = await response.json()
             setUsers(data)
+            setLoading(false)
         }
 
         fetchUsers()
     }, [])
 
-    return (
+    return loading ? <Loader/> : (
         <div>
       <h2 className="text-xl font-semibold mb-4">User List</h2>
       <Table>

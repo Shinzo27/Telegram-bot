@@ -1,33 +1,34 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, use } from "react";
 import { Label } from "./ui/label";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 interface ApiKey {
   id: string;
   key: string;
   name: string;
 }
+const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL
 
 const ApiKeyManager = () => {
-  const [apiKeys, setApiKeys] = useState<ApiKey[]>([]);
-  const [newKeyName, setNewKeyName] = useState("");
+  const [apiKey, setApiKey] = useState("");
+  const router = useRouter();
 
   const handleAddKey = async () => {
-    const response = await fetch("/api/api-keys", {
+    const response = await fetch(`${backendUrl}/updateApiKey`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name: newKeyName }),
+      body: JSON.stringify({ apiKey }),
     });
     const newKey = await response.json();
-    setApiKeys([...apiKeys, newKey]);
-    setNewKeyName("");
-  };
-
-  const handleDeleteKey = async (id: string) => {
-    await fetch(`/api/api-keys/${id}`, { method: "DELETE" });
-    setApiKeys(apiKeys.filter((key) => key.id !== id));
+    if(newKey.message === 'Api key updated'){
+      setApiKey("");
+      router.push('/');
+      toast.success("Api key updated successfully!")
+    }
   };
 
   return (
@@ -38,28 +39,13 @@ const ApiKeyManager = () => {
         <div className="flex mt-1">
           <Input
             id="new-key-name"
-            value={newKeyName}
-            onChange={(e) => setNewKeyName(e.target.value)}
+            value={apiKey}
+            onChange={(e) => setApiKey(e.target.value)}
             className="mr-2"
           />
           <Button onClick={handleAddKey}>Add Key</Button>
         </div>
       </div>
-      <ul className="space-y-2">
-        {apiKeys.map((key) => (
-          <li key={key.id} className="flex justify-between items-center">
-            <span>
-              {key.name}: {key.key}
-            </span>
-            <Button
-              variant="destructive"
-              onClick={() => handleDeleteKey(key.id)}
-            >
-              Delete
-            </Button>
-          </li>
-        ))}
-      </ul>
     </div>
   );
 };

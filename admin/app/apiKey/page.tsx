@@ -7,7 +7,7 @@ const page = () => {
     const router = useRouter();
     return (
         <div className="p-5">
-            <ArrowBigLeft className=" cursor-pointer" onClick={() => router.push('/')}/>
+            <ArrowBigLeft className=" cursor-pointer" onClick={() => router.push('/admin')}/>
             <div className="p-5">
                 <ApiKeyManager/>
             </div>

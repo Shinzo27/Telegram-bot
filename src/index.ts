@@ -3,7 +3,7 @@ import axios from "axios";
 import { config } from "./config.js";
 import User from "./Models/User.js";
 import mongoose, { mongo } from "mongoose";
-import express from "express";
+import express, { Request, Response } from "express";
 import UserRouter from './Routes/User.js'
 import cors from 'cors'
 
@@ -23,6 +23,10 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
 app.use('/api/admin/users', UserRouter)
+
+app.get('/', (req: Request, res: Response) => {
+    res.send('Hello World!')
+})
 
 bot.use(async (ctx: Context, next) => {
     const userId = ctx?.message?.from.id;

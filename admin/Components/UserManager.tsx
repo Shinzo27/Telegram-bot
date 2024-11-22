@@ -6,6 +6,7 @@ import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { redirect, useRouter } from "next/navigation";
 import Loader from "./Loader";
+import { toast } from "react-hot-toast";
 
 interface User {
   _id: string;
@@ -23,7 +24,8 @@ const UserManager = () => {
   const router = useRouter();
 
   useEffect(() => {
-    const fetchUsers = async () => {    
+    const fetchUsers = async () => {
+      setLoading(true);
       const response = await fetch(`${backendUrl}/getUser`, {
         method: "GET",
         headers: {
@@ -32,6 +34,7 @@ const UserManager = () => {
       });
       const data = await response.json();
       setUsers(data);
+      setLoading(false);
     };
     fetchUsers();
   }, []);
@@ -49,6 +52,7 @@ const UserManager = () => {
         });
         const updatedUser = await response.json();
         setUsers(updatedUser.users);
+        toast.success("User blocked successfully");
         router.push('/')
       } catch (error) {
         console.log(error);
@@ -66,6 +70,7 @@ const UserManager = () => {
         });
         const updatedUser = await response.json();
         setUsers(updatedUser.users);
+        toast.success("User unblocked successfully");
         router.push("/");
       } catch (error) {
       console.log(error);   
