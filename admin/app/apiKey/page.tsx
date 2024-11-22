@@ -1,5 +1,5 @@
 "use client"
-import ApiKeyManager from "@/components/api-key-manager";
+import ApiKeyManager from "../../components/api-key-manager";
 import { ArrowBigLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
 

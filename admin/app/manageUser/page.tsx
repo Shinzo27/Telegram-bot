@@ -1,5 +1,5 @@
 "use client"
-import UserManager from "@/components/UserManager";
+import UserManager from "../../components/UserManager";
 import { ArrowBigLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
 

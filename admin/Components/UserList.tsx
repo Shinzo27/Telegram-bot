@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "./ui/table"
-import Loader from "./Loader";
+import Loader from "./Loader"
 
 interface User {
   _id: string;
