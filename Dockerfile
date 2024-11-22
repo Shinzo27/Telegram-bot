@@ -10,6 +10,8 @@ COPY . .
 
 RUN chown -R node:node /app && chmod -R 755 /app
 
+RUN npm install -g typescript
+
 RUN npm run build
 
 EXPOSE 8000
