@@ -12,6 +12,8 @@ RUN chown -R node:node /app && chmod -R 755 /app
 
 RUN npm run build
 
+EXPOSE 8000
+
 USER node
 
 CMD ["npm", "start"]
