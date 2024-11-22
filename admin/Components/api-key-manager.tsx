@@ -1,16 +1,11 @@
 "use client";
-import { useState, useEffect, use } from "react";
+import { useState } from "react";
 import { Label } from "./ui/label";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 
-interface ApiKey {
-  id: string;
-  key: string;
-  name: string;
-}
 const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL
 
 const ApiKeyManager = () => {
