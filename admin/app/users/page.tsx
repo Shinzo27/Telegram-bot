@@ -1,5 +1,5 @@
 "use client"
-import UserList from "@/Components/UserList";
+import UserList from "@/components/UserList";
 import { ArrowBigLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
 
