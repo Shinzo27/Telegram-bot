@@ -14,7 +14,7 @@ RUN npm install -g typescript
 
 RUN npm run build
 
-EXPOSE 8000
+EXPOSE 3001
 
 USER node
 
