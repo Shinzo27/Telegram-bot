@@ -3,10 +3,26 @@ import axios from "axios";
 import { config } from "./config.js";
 import User from "./Models/User.js";
 import mongoose, { mongo } from "mongoose";
+import express from "express";
+import UserRouter from './Routes/User.js'
+import cors from 'cors'
+
+const app = express();
 
 mongoose.connect(config.MONGODB_URI || "").then(() => {console.log("Connected to MongoDB")}).catch((err) => {console.log(err)});
 
 const bot = new Telegraf(config.TOKEN || "");
+
+app.use(cors(
+    {
+        origin: 'http://localhost:3000',
+        credentials: true
+    }
+))
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
+
+app.use('/api/admin/users', UserRouter)
 
 bot.use(async (ctx: Context, next) => {
     const userId = ctx?.message?.from.id;
@@ -29,7 +45,7 @@ bot.start(async(ctx) => {
     const userId = ctx.message.from.id;
     const user = await User.findOne({ userId });
     if (!user) {
-        await User.create({ userId });
+        await User.create({ userId, username: ctx.message.from.username });
         ctx.reply(`Welcome ${ctx.message.from.first_name} to the Telegram Bot!`); 
     } else {
         ctx.reply(`Welcome back ${ctx.message.from.first_name}!`);
@@ -77,84 +93,84 @@ bot.command('weather', async(ctx) => {
     }
 });
 
-bot.command('block', async(ctx) => {
-    const userChatId = ctx.message.text.split(' ')[2];
-    const adminId = ctx.message.text.split(' ')[1];
+// bot.command('block', async(ctx) => {
+//     const userChatId = ctx.message.text.split(' ')[2];
+//     const adminId = ctx.message.text.split(' ')[1];
 
-    if(!adminId || adminId !== process.env.ADMIN_ID) {
-        ctx.reply('You are not authorized to perform this action');
-        return;
-    }
+//     if(!adminId || adminId !== process.env.ADMIN_ID) {
+//         ctx.reply('You are not authorized to perform this action');
+//         return;
+//     }
 
-    if(!userChatId) {
-        ctx.reply('Please provide a user chat id using /block [admin id] [user_chat_id]');
-        return;
-    }
+//     if(!userChatId) {
+//         ctx.reply('Please provide a user chat id using /block [admin id] [user_chat_id]');
+//         return;
+//     }
 
-    const user = await User.findOne({ userId: userChatId });
-    if (!user) {
-        ctx.reply('User not found');
-        return;
-    }
-    user.isBlocked = true;
-    user.save();
-    ctx.reply(`You have blocked ${user.userId}`);
-})
+//     const user = await User.findOne({ userId: userChatId });
+//     if (!user) {
+//         ctx.reply('User not found');
+//         return;
+//     }
+//     user.isBlocked = true;
+//     user.save();
+//     ctx.reply(`You have blocked ${user.userId}`);
+// })
 
-bot.command('users', async(ctx) => {
-    const adminId = ctx.message.text.split(' ')[1];
+// bot.command('users', async(ctx) => {
+//     const adminId = ctx.message.text.split(' ')[1];
 
-    if(!adminId || adminId !== process.env.ADMIN_ID) {
-        ctx.reply('You are not authorized to perform this action');
-        return;
-    }
+//     if(!adminId || adminId !== process.env.ADMIN_ID) {
+//         ctx.reply('You are not authorized to perform this action');
+//         return;
+//     }
 
-    const users = await User.find();
-    ctx.reply(`Users: ${users.join(', ')}`);
-})
+//     const users = await User.find();
+//     ctx.reply(`Users: ${users.join(', ')}`);
+// })
 
-bot.command('unblock', async(ctx) => {
-    const userChatId = ctx.message.text.split(' ')[2];
-    const adminId = ctx.message.text.split(' ')[1];
+// bot.command('unblock', async(ctx) => {
+//     const userChatId = ctx.message.text.split(' ')[2];
+//     const adminId = ctx.message.text.split(' ')[1];
 
-    if(!adminId || adminId !== config.ADMIN_ID) {
-        ctx.reply('You are not authorized to perform this action');
-        return;
-    }
+//     if(!adminId || adminId !== config.ADMIN_ID) {
+//         ctx.reply('You are not authorized to perform this action');
+//         return;
+//     }
 
-    if(!userChatId) {
-        ctx.reply('Please provide a user chat id using /unblock [admin id] [user_chat_id]');
-        return;
-    }
+//     if(!userChatId) {
+//         ctx.reply('Please provide a user chat id using /unblock [admin id] [user_chat_id]');
+//         return;
+//     }
 
-    const user = await User.findOne({ userId: userChatId });
-    if (!user) {
-        ctx.reply('User not found');
-        return;
-    }
+//     const user = await User.findOne({ userId: userChatId });
+//     if (!user) {
+//         ctx.reply('User not found');
+//         return;
+//     }
 
-    user.isBlocked = false;
-    user.save();
-    ctx.reply(`You have unblocked ${ctx.message.from.first_name}`);
-})
+//     user.isBlocked = false;
+//     user.save();
+//     ctx.reply(`You have unblocked ${ctx.message.from.first_name}`);
+// })
 
-bot.command('weatherApiKey', async(ctx) => {
-    const adminKey = ctx.message.text.split(' ')[1];
-    const weatherApiKey = ctx.message.text.split(' ')[2];
+// bot.command('weatherApiKey', async(ctx) => {
+//     const adminKey = ctx.message.text.split(' ')[1];
+//     const weatherApiKey = ctx.message.text.split(' ')[2];
 
-    if(!adminKey || adminKey !== config.ADMIN_ID) {
-        ctx.reply('You are not authorized to perform this action');
-        return;
-    }
+//     if(!adminKey || adminKey !== config.ADMIN_ID) {
+//         ctx.reply('You are not authorized to perform this action');
+//         return;
+//     }
 
-    if(!weatherApiKey) {
-        ctx.reply('Please provide a weather api key using /weatherApiKey [api_key]');
-        return;
-    }
+//     if(!weatherApiKey) {
+//         ctx.reply('Please provide a weather api key using /weatherApiKey [api_key]');
+//         return;
+//     }
 
-    config.WEATHER_API_KEY = weatherApiKey;
-    ctx.reply(`You have updated the weather api key to ${weatherApiKey}`);
-});
+//     config.WEATHER_API_KEY = weatherApiKey;
+//     ctx.reply(`You have updated the weather api key to ${weatherApiKey}`);
+// });
 
 bot.command('changeCity', async(ctx) => {
     const userId = ctx.message.from.id;
@@ -177,3 +193,7 @@ bot.command('changeCity', async(ctx) => {
 });
 
 bot.launch();
+
+app.listen(8000, () => {
+    console.log('Server is running on port 3000');
+});
