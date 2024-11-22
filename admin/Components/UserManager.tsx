@@ -49,7 +49,7 @@ const UserManager = () => {
         });
         const updatedUser = await response.json();
         setUsers(updatedUser.users);
-        router.refresh();
+        router.push('/')
       } catch (error) {
         console.log(error);
       } finally {

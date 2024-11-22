@@ -14,19 +14,7 @@ const ApiKeyManager = () => {
   const [apiKeys, setApiKeys] = useState<ApiKey[]>([]);
   const [newKeyName, setNewKeyName] = useState("");
 
-  useEffect(() => {
-    // Replace this with your actual API call
-    const fetchApiKeys = async () => {
-      const response = await fetch("/api/api-keys");
-      const data = await response.json();
-      setApiKeys(data);
-    };
-
-    fetchApiKeys();
-  }, []);
-
   const handleAddKey = async () => {
-    // Replace this with your actual API call
     const response = await fetch("/api/api-keys", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -38,7 +26,6 @@ const ApiKeyManager = () => {
   };
 
   const handleDeleteKey = async (id: string) => {
-    // Replace this with your actual API call
     await fetch(`/api/api-keys/${id}`, { method: "DELETE" });
     setApiKeys(apiKeys.filter((key) => key.id !== id));
   };
@@ -47,7 +34,7 @@ const ApiKeyManager = () => {
     <div>
       <h2 className="text-xl font-semibold mb-4">API Key Management</h2>
       <div className="mb-4">
-        <Label htmlFor="new-key-name">New API Key Name</Label>
+        <Label htmlFor="new-key-name">Enter New Weather Api</Label>
         <div className="flex mt-1">
           <Input
             id="new-key-name"

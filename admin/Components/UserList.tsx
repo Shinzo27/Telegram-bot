@@ -4,22 +4,27 @@ import { useState, useEffect } from "react"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "./ui/table"
 
 interface User {
-    id: number
-    username: string
-    firstName: string
-    lastName: string
-    status: "active" | "blocked"
+  _id: string;
+  username: string;
+  userId: string,
+  isBlocked: boolean,
+  location: string,
 }
+const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL
 
 const UserList = () => {
     const [users, setUsers] = useState<User[]>([])
 
     useEffect(() => {
-        // Replace this with your actual API call
         const fetchUsers = async () => {
-            // const response = await fetch("/api/users")
-            // const data = await response.json()
-            // setUsers(data)
+            const response = await fetch(`${backendUrl}/getUser`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+            const data = await response.json()
+            setUsers(data)
         }
 
         fetchUsers()
@@ -33,19 +38,17 @@ const UserList = () => {
           <TableRow>
             <TableHead>ID</TableHead>
             <TableHead>Username</TableHead>
-            <TableHead>First Name</TableHead>
-            <TableHead>Last Name</TableHead>
-            <TableHead>Status</TableHead>
+            <TableHead>Location</TableHead>
+            <TableHead>Is Blocked</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {users.map((user) => (
-            <TableRow key={user.id}>
-              <TableCell>{user.id}</TableCell>
+            <TableRow key={user.userId}>
+              <TableCell>{user.userId}</TableCell>
               <TableCell>{user.username}</TableCell>
-              <TableCell>{user.firstName}</TableCell>
-              <TableCell>{user.lastName}</TableCell>
-              <TableCell>{user.status}</TableCell>
+              <TableCell>{user.location}</TableCell>
+              <TableCell>{user.isBlocked ? "Blocked" : "Not Blocked"}</TableCell>
             </TableRow>
           ))}
         </TableBody>
