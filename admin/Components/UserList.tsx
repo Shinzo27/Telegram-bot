@@ -1,8 +1,7 @@
 "use client"
-
 import { useState, useEffect } from "react"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "./ui/table"
-import Loader from "./Loader"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/Components/ui/table"
+import Loader from "@/Components/ui/Loader";
 
 interface User {
   _id: string;

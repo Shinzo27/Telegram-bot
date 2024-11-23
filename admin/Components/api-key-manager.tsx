@@ -1,8 +1,8 @@
 "use client";
 import { useState } from "react";
-import { Label } from "./ui/label";
-import { Input } from "./ui/input";
-import { Button } from "./ui/button";
+import { Label } from "@/Components/ui/label";
+import { Input } from "@/Components/ui/input";
+import { Button } from "@/Components/ui/button";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 

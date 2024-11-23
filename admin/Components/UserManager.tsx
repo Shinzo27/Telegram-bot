@@ -1,11 +1,11 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Button } from "./ui/button";
-import { Input } from "./ui/input";
-import { Label } from "./ui/label";
+import { Button } from "@/Components/ui/button";
+import { Input } from "@/Components/ui/input";
+import { Label } from "@/Components/ui/label";
 import { useRouter } from "next/navigation";
-import Loader from "./Loader";
+import Loader from "@/Components/ui/Loader";
 import { toast } from "react-hot-toast";
 
 interface User {
