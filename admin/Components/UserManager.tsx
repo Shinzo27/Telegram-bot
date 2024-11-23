@@ -53,7 +53,7 @@ const UserManager = () => {
         const updatedUser = await response.json();
         setUsers(updatedUser.users);
         toast.success("User blocked successfully");
-        router.push('/')
+        router.push('/admin')
       } catch (error) {
         console.log(error);
       } finally {
@@ -71,7 +71,7 @@ const UserManager = () => {
         const updatedUser = await response.json();
         setUsers(updatedUser.users);
         toast.success("User unblocked successfully");
-        router.push("/");
+        router.push("/admin");
       } catch (error) {
       console.log(error);   
       } finally {
